@@ -13,13 +13,11 @@ initDBs().then(() => {
   console.log("Databases initialized.");
 });
 
-// 🔍 GET cars
 app.get('/cars', async (req, res) => {
   await carsDB.read();
   res.json(carsDB.data.cars);
 });
 
-// 📝 POST order
 app.post('/order', async (req, res) => {
   const { vin, name, phone, email, license, startDate, rentalDays } = req.body;
 
@@ -36,11 +34,9 @@ app.post('/order', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Car not available' });
   }
 
-  // Mark car unavailable
   car.available = false;
   await carsDB.write();
 
-  // Add order
   const newOrder = {
     id: nanoid(),
     vin,
